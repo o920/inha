@@ -1,0 +1,3 @@
+﻿  소스.cpp
+c:\users\hepbu\source\repos\project3\project3\소스.cpp(12): warning C4244: '=': 'double'에서 'float'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  Project3.vcxproj -> C:\Users\hepbu\source\repos\Project3\Debug\Project3.exe
