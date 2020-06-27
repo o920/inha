@@ -79,6 +79,10 @@ int main(int argc, char* argv[]) {
 void read_childproc(int sig) {
 	pid_t pid;
 	int status;
+	//자식 프로세스가 반환한 값을 부모프로세스가 잘 받게함
+	//-1은 임의의 자식 프로세스가 종료됐을때 이함수를 통해서 값을 반환받는다는 걸 의미
+	//status는 프로세스가 종료될때 어떤 상태였는지 저장, 반환 값도 마찬가지
+	//세번째 인자는 자식이 종료되지 않아도 blocking 상태 없이 0 을 반환하면서 빠져나옴
 	pid = waitpid(-1, &status, WNOHANG);
 	printf("removed proc id : %d \n", pid);
 }
