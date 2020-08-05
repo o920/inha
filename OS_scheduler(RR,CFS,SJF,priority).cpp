@@ -8,13 +8,13 @@
 #define MAX 20
 using namespace std;
 
-queue<int> roundrobin;	//Roundrobin¿¡ ´ëÇÑ Å¥
-queue<int> CFS;			//completely fair scheduling¿¡ ´ëÇÑ Å¥
-queue<int> SJF;			//short job first¿¡ ´ëÇÑ Å¥
+queue<int> roundrobin;	//Roundrobinì— ëŒ€í•œ í
+queue<int> CFS;			//completely fair schedulingì— ëŒ€í•œ í
+queue<int> SJF;			//short job firstì— ëŒ€í•œ í
 
 int cla[MAX] = {};
-int pri[MAX] = {};		//ÇÁ·Î¼¼½ºÀÇ ¿ì¼±¼øÀ§
-int pid[MAX] = {};		//ÇÁ·Î¼¼½ºÀÇ id
+int pri[MAX] = {};		//í”„ë¡œì„¸ìŠ¤ì˜ ìš°ì„ ìˆœìœ„
+int pid[MAX] = {};		//í”„ë¡œì„¸ìŠ¤ì˜ id
 int cpuburst[MAX] = {};	//cpu burst length
 
 int c, id, p, b;
@@ -25,8 +25,8 @@ void *C_F_S(void* arg);
 void *S_J_F(void* arg);
 
 int main(int argc, char*argv[]) {
-	freopen( "input.txt", "r", stdin);		//ÆÄÀÏ·Î ÀÔ·Â¹Ş±â
-	freopen( "output.txt", "w", stdout);	//ÆÄÀÏ·Î Ãâ·ÂÇÏ±â
+	freopen( "input.txt", "r", stdin);		//íŒŒì¼ë¡œ ì…ë ¥ë°›ê¸°
+	freopen( "output.txt", "w", stdout);	//íŒŒì¼ë¡œ ì¶œë ¥í•˜ê¸°
 
 	while (scanf("%d %d %d %d", &c, &id, &p, &b) != (int)EOF) {
 		cla[a] = c;
@@ -55,9 +55,9 @@ int main(int argc, char*argv[]) {
 }
 void *RoundRobin(void* arg) {
 	//roundrobin
-	deque<int> round;				//timequantum ¸¸Å­ ¼öÇà ÈÄ ¸Ç µÚ¿¡¼­ ±â´Ù¸®´Â Å¥
+	deque<int> round;				//timequantum ë§Œí¼ ìˆ˜í–‰ í›„ ë§¨ ë’¤ì—ì„œ ê¸°ë‹¤ë¦¬ëŠ” í
 	int tq = 4;						//time quantum
-	//round Å¥¿¡ ÇÁ·Î¼¼½º ³Ö±â
+	//round íì— í”„ë¡œì„¸ìŠ¤ ë„£ê¸°
 	for (int j = 0; j < a; j++) {
 		if (cla[j] != 0) continue;
 		int min = 987654321;
@@ -75,7 +75,7 @@ void *RoundRobin(void* arg) {
 	}
 	int idx = 0;
 	while (round.size() > 0) {
-		for (int i = 0; i < tq; i++) {						// timequantum ¸¸Å­ ¼öÇàÇÏ°í Å¥ÀÇ µÚ·Î º¸³»±â
+		for (int i = 0; i < tq; i++) {						// timequantum ë§Œí¼ ìˆ˜í–‰í•˜ê³  íì˜ ë’¤ë¡œ ë³´ë‚´ê¸°
 			if (cpuburst[round.front()] > tq) {
 				idx = round.front();
 				for (int j = 0; j < tq; j++) {
@@ -120,7 +120,7 @@ void *C_F_S(void* arg) {
 	int delta_exec[MAX] = { 0, };
 	int ready[MAX] = { 0, };
 	bool ready_check[MAX] = { 0, };
-	bool check[MAX] = { 0, }; // Áßº¹È®ÀÎ
+	bool check[MAX] = { 0, }; // ì¤‘ë³µí™•ì¸
 
 	for (int i = 0; i < a; i++) {
 		if (cla[i] != 1)continue;
@@ -134,18 +134,18 @@ void *C_F_S(void* arg) {
 	}
 	int prior = 0;
 	while (1) {
-		//ÃÊ±âÈ­
+		//ì´ˆê¸°í™”
 		for (int i = 0; i < a; i++) {
 			check[i] = 0;
 			ready_check[i] = 0;
 		}
-		//vruntime ¾÷µ¥ÀÌÆ®
+		//vruntime ì—…ë°ì´íŠ¸
 		for (int i = 0; i < a; i++) {
 			if (cla[i] != 1)continue;
 			vruntime[i] += (12 / weight[i]) * delta_exec[i];
 		}
 
-		//vruntime ÃÖ¼Ò°ª Ã£±â
+		//vruntime ìµœì†Œê°’ ì°¾ê¸°
 		int vrunmin = 987654321;
 		int vrunmin_idx = 0;
 		for (int i = 0; i < a; i++) {
@@ -156,7 +156,7 @@ void *C_F_S(void* arg) {
 				vrunmin = vruntime[i];
 			}
 		}
-		// vruntime °ªÀÌ Áßº¹ÀÎ °æ¿ì Ã£±â
+		// vruntime ê°’ì´ ì¤‘ë³µì¸ ê²½ìš° ì°¾ê¸°
 		int count = 0;
 		for (int i = 0; i < a; i++) {
 			if (cla[i] != 1)continue;
@@ -167,13 +167,13 @@ void *C_F_S(void* arg) {
 			}
 		}
 		
-		// vruntime °ªÀÌ Áßº¹ÀÌ ÀÖ´Â °æ¿ì
+		// vruntime ê°’ì´ ì¤‘ë³µì´ ìˆëŠ” ê²½ìš°
 		if (count > 1) {
-			//readyÈ®ÀÎ -> priority È®ÀÎ
-			int readymax = 0;		// ready ÃÖ´ñ°ª Ã£±â
-			int readymax_idx = 0;	// ±×¶§ÀÇ ÀÎµ¦½º
-			int ready_count = 0;	// readyµµ Áßº¹ÀÌ ÀÖ´ÂÁö È®ÀÎÇÏ±â
-			//ready ÃÖ´ñ°ª Ã£±â
+			//readyí™•ì¸ -> priority í™•ì¸
+			int readymax = 0;		// ready ìµœëŒ“ê°’ ì°¾ê¸°
+			int readymax_idx = 0;	// ê·¸ë•Œì˜ ì¸ë±ìŠ¤
+			int ready_count = 0;	// readyë„ ì¤‘ë³µì´ ìˆëŠ”ì§€ í™•ì¸í•˜ê¸°
+			//ready ìµœëŒ“ê°’ ì°¾ê¸°
 			for (int i = 0; i < a; i++) {
 				if (cla[i] != 1)continue;
 				if (cpuburst[i] == 0)continue;
@@ -183,7 +183,7 @@ void *C_F_S(void* arg) {
 					readymax_idx = i;
 				}
 			}
-			//ready Áßº¹°ª Ã£±â
+			//ready ì¤‘ë³µê°’ ì°¾ê¸°
 			for (int i = 0; i < a; i++) {
 				if (cla[i] != 1)continue;
 				if (cpuburst[i] == 0)continue;
@@ -192,7 +192,7 @@ void *C_F_S(void* arg) {
 					ready_check[i] = true;
 				}
 			}
-			//ready Áßº¹ÀÌ ÀÖ´Â °æ¿ì -> priority°¡ °¡Àå ³ôÀºÇÁ·Î¼¼½º ¼öÇà
+			//ready ì¤‘ë³µì´ ìˆëŠ” ê²½ìš° -> priorityê°€ ê°€ì¥ ë†’ì€í”„ë¡œì„¸ìŠ¤ ìˆ˜í–‰
 			if (ready_count > 1) {
 				int primin = 12;
 				int primin_idx = 0;
@@ -217,7 +217,7 @@ void *C_F_S(void* arg) {
 					ready[i]++;
 				}
 			}
-			//ready Áßº¹ÀÌ ¾ø´Â °æ¿ì, ready °ªÀÌ Å« ÇÁ·Î¼¼½º ¼öÇà
+			//ready ì¤‘ë³µì´ ì—†ëŠ” ê²½ìš°, ready ê°’ì´ í° í”„ë¡œì„¸ìŠ¤ ìˆ˜í–‰
 			else {
 				if (prior != readymax_idx) cout << endl;
 				cout << pid[readymax_idx] << " ";
@@ -232,7 +232,7 @@ void *C_F_S(void* arg) {
 			}
 
 		}
-		// vruntime °ªÀÇ Áßº¹ÀÌ ¾ø´Â °æ¿ì
+		// vruntime ê°’ì˜ ì¤‘ë³µì´ ì—†ëŠ” ê²½ìš°
 		else {
 			if (prior != vrunmin_idx) cout << endl;
 			cout << pid[vrunmin_idx] <<" ";
@@ -265,7 +265,7 @@ void *S_J_F(void* arg) {
 		s[i].second = cpuburst[i];
 	}
 	while (1) {
-		//ÃÖ¼Ò cpu burst Ã£±â
+		//ìµœì†Œ cpu burst ì°¾ê¸°
 		int min = 987654321;
 		int min_idx = 0;
 		for (int i = 0; i < a; i++) {
